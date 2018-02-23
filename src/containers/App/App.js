@@ -1,61 +1,58 @@
 import React, { Component } from 'react';
-import logo from '../../logo.svg';
 import './App.css';
-import NameTag from '../../components/NameTag';
-import BookList from '../../components/BookList';
-import BookListAppTitle from '../../components/BookListAppTitle'
-
-import { getBooksFromFakeXHR } from '../../lib/books.db';
-// import {addBookToFakeXHR as addBook} from '../lib/books.db';
-// import {getBookByIdFromFakeXHR as getBookById} from '../lib/books.db';
+import AppTitleComponent from '../../components/BookListAppTitle';
+import BookFilterInput from '../../components/BookFilterInput';
+import NewBookForm from '../NewBookForm/index';
+import BookList from '../Booklist/index';
+import { getBooksFromFakeXHR, addBookToFakeXHR } from '../../lib/books.db'
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      book: [],
-      filter: ''
-
-    }
+    this.state = { books: [], search: '' }
   }
-
-  handleOnChangeEvent(event) {
-    this.setState({filter: event.target.value});
-  }
-
 
   componentDidMount() {
-    getBooksFromFakeXHR()
-      .then(result => {
-        console.log('BOOKLIST', result)
-        this.setState({
-          book: result
-        })
-      })
+    getBooksFromFakeXHR().then(result => {
+      this.setState({ books: result })
+    })
   }
 
+  addBook(book) {
+    let newBook = {
+      title: book.title,
+      author: book.author
+    }
+
+    addBookToFakeXHR(newBook).then(result => {
+      this.setState({ books: result });
+    })
+  }
+
+  searchInput(event) {
+    const found = event.target.value;
+    this.setState({ search: found })
+  }
 
   render() {
     return (
       <div className="App">
-        <div className='BookListAppTitle'>
-          <BookListAppTitle />
+
+        <AppTitleComponent />
+
+        <BookFilterInput searchInput={this.searchInput.bind(this)} />
+
+        <div className="BookListContainer">
+          <BookList books={this.state.books} findBook={this.state.search} />
         </div>
-        <div className='BookFilterInput'>
-          <input type='text'
-            value={this.state.filter}
-            onChange={this.handleOnChangeEvent.bind(this)}
-          />
+        
+        <div className="NewBookFormContainer">
+          <NewBookForm addNew={this.addBook.bind(this)} />
         </div>
-        {this.state.filter}
-        <NameTag name="Book Title" />
-        <BookList books={this.state.book} />
 
       </div>
     );
   }
 }
-
-
 
 export default App;

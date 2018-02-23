@@ -1,20 +1,20 @@
 import React from 'react';
 
-class ParentContainer extends React.Component {
+class AppTitleComponent extends React.Component {
   render() {
     return (
-      <BookListAppTitle title = 'TITLE GOES HERE'/>
+      <AppChildComponent
+      title='TITLE GOES HERE' />
     );
   }
 }
 
-class BookListAppTitle extends React.Component {
+class AppChildComponent extends React.Component {
   render() {
-
     return (
       <h1>{this.props.title}</h1>
     );
   }
 }
 
-export default ParentContainer;
+export default AppTitleComponent;

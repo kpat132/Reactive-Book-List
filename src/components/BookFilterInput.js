@@ -1,10 +1,17 @@
-// import React from 'react';
+import React from 'react';
 
-// const bookList
+const BookFilterInput = ({ searchInput }) => {
+  return(
+    <div>
+      <br/>
+      <input type="text"
+      name="search"
+      placeholder="search"
+      onChange={ searchInput }/>
+      <br/>
+      <br/>
+    </div>
+  )
+}
 
-// <div className='BookFilterInput'>
-// <input type='text'
-//   value={this.state.filter}
-//   onChange={this.handleOnChangeEvent.bind(this)}
-// />
-// </div>
+export default BookFilterInput;
